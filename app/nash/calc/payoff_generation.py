@@ -22,8 +22,26 @@ class PayoffGen(object):
         self.players    : np.int16 = players
         self.strategy   : np.int16 = strategy
         
-        self.possibilities: tuple[int]  = [comb for comb in product(range(self.strategy), repeat=players)]
-        self.poss_len     : int         = len(self.possibilities)
+        self.possibilities: list[tuple[int]]    = [comb for comb in product(range(self.strategy), repeat=players)]
+        self.poss_len     : int                 = len(self.possibilities)
+        
+        self.calc_choices_index()
+        
+    def calc_choices_index(self) -> None:
+        """
+        Defines the strategy index for each strategy. The data is in self.choices_index. 
+        """
+        self.choices_index: dict[int, np.ndarray] = {}
+        
+        for h in range(self.players):
+                self.choices_index[h] = np.array([
+                np.array([n for n, strategy_option in enumerate(self.possibilities) if strategy_option[h] == i])
+                for i in range(self.strategy)
+                ])
+
+    @property
+    def choice_index_data(self) -> dict[int, np.ndarray]:
+        return self.choices_index
     
     def payoff_range(self, min_: np.float64 = -1, max_: np.float64 = 1) -> None:
         """
