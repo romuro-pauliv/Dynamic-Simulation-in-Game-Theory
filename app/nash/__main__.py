@@ -7,7 +7,7 @@ from uuid import uuid4
 def simulate() -> None:
     PLAYERS     : int = 4
     STRATEGY    : int = 2
-    ITERATIONS  : int = 1000000
+    ITERATIONS  : int = 100000
     MIN_RANGE   : float = -1
     MAX_RANGE   : float = 1
     ID_         : str   = str(uuid4())
@@ -30,14 +30,10 @@ def simulate() -> None:
     GenBin.save(ID_, historic)
 
 
-import multiprocessing as mp
 
-process: list[mp.Process] = []
-for _ in range(mp.cpu_count()-1):
-    process.append(mp.Process(target=simulate))
+if __name__ == "__main__":    
+    from core.multiprocessing import CoreChunk
 
-for process_ in process:
-    process_.start()
-
-for process_ in process:
-    process_.join()
+    core_chunk: CoreChunk = CoreChunk(1, 20)
+    core_chunk.define_function(simulate)
+    core_chunk.run()
