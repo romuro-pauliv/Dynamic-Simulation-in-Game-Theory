@@ -7,7 +7,7 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import numpy as np
 
-from typing import Callable, Any
+from typing import Callable
 # | -------------------------------------------------------------------------------------------------------------------|
 
 class Algorithms(object):
@@ -51,7 +51,15 @@ class Algorithms(object):
         
         return np.argmax(np.array(payoff_sum))
     
-    def randomize(self, qnt_strategy: int) -> None:
+    def randomize(self, qnt_strategy: int) -> int:
+        """
+        Random strategy
+        Args:
+            qnt_strategy (int): Strategy options
+
+        Returns:
+            int: The choice that the algorithm chose
+        """
         return np.random.choice(range(qnt_strategy))
 
 class Choices(object):
@@ -67,6 +75,15 @@ class Choices(object):
         self.n_players      : int               = len(self.choice_index)
     
     def get_payoffs(self, matrix: np.ndarray, choice: tuple[int]) -> np.ndarray:
+        """
+        Get the results based on payoffs matrix
+        Args:
+            matrix (np.ndarray): Payoff matrix
+            choice (tuple[int]): The group choice
+
+        Returns:
+            np.ndarray: payoffs
+        """
         master_index: int = self.possibilites.index(choice)
         
         payoff: list[np.float64] = []
