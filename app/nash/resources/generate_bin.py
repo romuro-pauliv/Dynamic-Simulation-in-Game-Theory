@@ -8,6 +8,8 @@
 import pickle
 from pathlib import Path, PosixPath
 
+from log.genlog import genlog
+
 from typing import Any
 # |--------------------------------------------------------------------------------------------------------------------|
 
@@ -21,6 +23,7 @@ class GenBin(object):
         """
         with open(Path(PATH_, f"{name}.bin"), "wb") as f:
             pickle.dump(obj, f)
+        genlog.report(True, f"saved [{name}.bin]")
     
     @staticmethod
     def load(name: str) -> Any:

@@ -7,6 +7,8 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import multiprocessing
 
+from log.genlog import genlog
+
 from typing import Callable
 # |--------------------------------------------------------------------------------------------------------------------|
 
@@ -37,6 +39,7 @@ class CoreChunk(object):
         self.processes: list[multiprocessing.Process] = []
         for _ in range(self.processing_times):
             self.processes.append(multiprocessing.Process(target=self.func))
+        genlog.report(True, f"Generated [{len(self.processes)}] Process")
     
     def _split_in_chunks(self) -> list[list[multiprocessing.Process]]:
         """
@@ -47,12 +50,14 @@ class CoreChunk(object):
         return [self.processes[i:i+self.CPU] for i in range(0, len(self.processes), self.CPU)] 
 
     def _start_processes(self, process_list: list[multiprocessing.Process]):
+        genlog.report(True, f"Starting [{len(process_list)}] child process...")
         for process in process_list:
             process.start()
     
     def _join_processes(self, process_list: list[multiprocessing.Process]):
         for process in process_list:
             process.join()
+        genlog.report(True, f"Joined [{len(process_list)}] child process")
     
     def run(self) -> None:
         """
