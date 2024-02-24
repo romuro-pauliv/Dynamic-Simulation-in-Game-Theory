@@ -57,6 +57,7 @@ class CoreChunk(object):
     def _join_processes(self, process_list: list[multiprocessing.Process]):
         for process in process_list:
             process.join()
+            process.close()
         genlog.report(True, f"Joined [{len(process_list)}] child process")
     
     def run(self) -> None:
@@ -65,7 +66,9 @@ class CoreChunk(object):
         """
         self._generate_processes()
         chunks: list[list[multiprocessing.Process]] = self._split_in_chunks()
+        chunk_len: int = len(chunks)
         
-        for chunk in chunks:
+        for n, chunk in enumerate(chunks):
+            genlog.report("DEBUG", f"Process chunk [{n}|{chunk_len}]")
             self._start_processes(chunk)
             self._join_processes(chunk)

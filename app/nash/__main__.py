@@ -1,21 +1,17 @@
 from calc.payoff_generation import PayoffGen
 from controller.choices import Choices
 from resources.generate_bin import GenBin
-from log.genlog import genlog
 
 import numpy as np
 from uuid import uuid4
-import os
 
 def simulate() -> None:
     PLAYERS     : int = 4
     STRATEGY    : int = 2
-    ITERATIONS  : int = 100000
+    ITERATIONS  : int = 1000000
     MIN_RANGE   : float = -1
     MAX_RANGE   : float = 1
     ID_         : str   = str(uuid4())
-    
-    genlog.report("debug", f"Simulation it[{ITERATIONS}] in pid: [{os.getpid()}]")
     
     payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
     choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
@@ -39,6 +35,6 @@ def simulate() -> None:
 if __name__ == "__main__":    
     from core.multiprocessing import CoreChunk
 
-    core_chunk: CoreChunk = CoreChunk(1, 20)
+    core_chunk: CoreChunk = CoreChunk(1, 10)
     core_chunk.define_function(simulate)
     core_chunk.run()

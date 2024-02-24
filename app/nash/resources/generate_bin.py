@@ -13,7 +13,7 @@ from log.genlog import genlog
 from typing import Any
 # |--------------------------------------------------------------------------------------------------------------------|
 
-PATH_: PosixPath = Path("nash")
+PATH_: PosixPath = Path("nash", "data")
 
 class GenBin(object):
     @staticmethod
@@ -23,6 +23,7 @@ class GenBin(object):
         """
         with open(Path(PATH_, f"{name}.bin"), "wb") as f:
             pickle.dump(obj, f)
+            f.close()
         genlog.report(True, f"saved [{name}.bin]")
     
     @staticmethod
