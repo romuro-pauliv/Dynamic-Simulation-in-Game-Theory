@@ -56,6 +56,3 @@ class GenDataDir(object):
             genlog.report(True, f"[rmtree] deleted {self.path_}")
         else:
             genlog.report(False, f"[rmtree] {self.path_} not exists")
-
-
-generate_data_dir: GenDataDir = GenDataDir()

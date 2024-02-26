@@ -1,43 +1,21 @@
-from calc.payoff_generation import PayoffGen
-from controller.choices import Choices
-from resources.generate_bin import GenBin
+# |--------------------------------------------------------------------------------------------------------------------|
+# |                                                                                                    app/__main__.py |
+# |                                                                                                    encoding: UTF-8 |
+# |                                                                                                     Python v: 3.10 |
+# |--------------------------------------------------------------------------------------------------------------------|
 
-import numpy as np
-from uuid import uuid4
-
-def simulate() -> None:
-    PLAYERS     : int = 4
-    STRATEGY    : int = 2
-    ITERATIONS  : int = 100
-    MIN_RANGE   : float = -1
-    MAX_RANGE   : float = 1
-    ID_         : str   = str(uuid4())
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-        # Algorithms to each player |------------------------------------|
-        P1 = choices.algorithms.get_maxsum(matrix[0], 0)
-        P2 = choices.algorithms.get_maxsum(matrix[1], 1)
-        P3 = choices.algorithms.get_maxsum(matrix[2], 2)
-        P4 = choices.algorithms.get_maxsum(matrix[3], 3)
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
-        # |--------------------------------------------------------------|
-        
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(ID_, historic)
-
+# | Imports |----------------------------------------------------------------------------------------------------------|
+from resources.generate_data_dir    import GenDataDir
+from core.multiprocessing           import CoreChunk
+from simulation.nash                import simulate
+# |--------------------------------------------------------------------------------------------------------------------|
 
 
 if __name__ == "__main__":
-    from resources.generate_data_dir import generate_data_dir
+    generate_data_dir: GenDataDir = GenDataDir()
     generate_data_dir.delete(), generate_data_dir.create()
     
-    from core.multiprocessing import CoreChunk
-
+    
     core_chunk: CoreChunk = CoreChunk(1, 100)
     core_chunk.define_function(simulate)
     core_chunk.run()
