@@ -37,6 +37,7 @@ class GenBin(object):
         """
         Load a object
         """
-        with open(Path(PATH_, f"{name}{bin_ext}"), "rb") as f:
+        with open(Path(PATH_, name), "rb") as f:
             file: Any = pickle.load(f)
+        genlog.report("LOAD", f"{Path(PATH_, name)}")
         return file

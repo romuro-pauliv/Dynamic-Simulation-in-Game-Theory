@@ -64,5 +64,6 @@ class PayoffGen(object):
         Returns:
             dict[int, np.ndarray]: [player index: payoffs]
         """
+        np.random.seed()
         payoff_matrix: list[np.ndarray] = [self.gen_random_payoff() for _ in range(self.players)]
         return np.array(payoff_matrix)

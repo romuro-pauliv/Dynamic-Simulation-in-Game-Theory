@@ -19,3 +19,6 @@ if __name__ == "__main__":
     core_chunk: CoreChunk = CoreChunk()
     core_chunk.define_function(simulate)
     core_chunk.run()
+    
+    from graph.read_all_bin import ReadAllBin
+    read_all_bin: ReadAllBin = ReadAllBin()
