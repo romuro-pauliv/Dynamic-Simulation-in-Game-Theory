@@ -51,6 +51,24 @@ class Algorithms(object):
         
         return np.argmax(np.array(payoff_sum))
     
+    def get_less_negative(self, player_payoff_matrix: np.ndarray, player_index: int) -> int:
+        """
+        Based the choice in the strategy with the lowest negative return
+        Args:
+            player_payoff_matrix (np.ndarray): Player payoff matrix
+            player_index (int): The index of the player
+
+        Returns:
+            int: The choice that the algorithm chose.
+        """
+        payoff_sum_negative: list[np.float64] = []
+        
+        for ind in self.choice_index[player_index]:
+            choice: np.ndarray = player_payoff_matrix[ind]
+            payoff_sum_negative.append(np.sum(choice[choice < 0]))
+            
+        return np.argmax(np.array(payoff_sum_negative))
+    
     def randomize(self, qnt_strategy: int) -> int:
         """
         Random strategy
