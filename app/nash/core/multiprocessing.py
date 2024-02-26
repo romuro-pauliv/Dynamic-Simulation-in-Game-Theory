@@ -7,6 +7,7 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import multiprocessing
 
+from config.config_files import configfiles
 from log.genlog import genlog
 
 from typing import Callable
@@ -14,15 +15,17 @@ from typing import Callable
 
 
 class CoreChunk(object):
-    def __init__(self, cpu_off: int, processing_times: int) -> None:
+    def __init__(self) -> None:
         """
         Initialize the CoreChunk instance.
         Args:
             cpu_off (int): Inform qnt of cpus offs
             processing_times (int): Qnt times to processing the function
         """
+        cpu_off: int = int(configfiles.dot_ini['simulation']['simulate:cores']['core_off'])
+        
         self.CPU                : int = multiprocessing.cpu_count()-cpu_off
-        self.processing_times   : int = processing_times
+        self.processing_times   : int = int(configfiles.dot_ini['simulation']['simulate:samples']['times'])
         
     def define_function(self, function: Callable[[None], None]) -> None:
         """

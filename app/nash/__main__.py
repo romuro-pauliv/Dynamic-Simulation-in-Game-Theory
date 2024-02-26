@@ -16,6 +16,6 @@ if __name__ == "__main__":
     generate_data_dir.delete(), generate_data_dir.create()
     
     
-    core_chunk: CoreChunk = CoreChunk(1, 100)
+    core_chunk: CoreChunk = CoreChunk()
     core_chunk.define_function(simulate)
     core_chunk.run()

@@ -8,6 +8,7 @@
 from calc.payoff_generation import PayoffGen
 from controller.choices     import Choices
 from resources.generate_bin import GenBin
+from config.config_files    import configfiles
 
 from uuid                   import uuid4
 import numpy as np
@@ -15,11 +16,11 @@ import numpy as np
 
 
 def simulate() -> None:
-    PLAYERS     : int   = 4
-    STRATEGY    : int   = 2
-    ITERATIONS  : int   = 100
-    MIN_RANGE   : float = -1
-    MAX_RANGE   : float = 1
+    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
+    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
+    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
+    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
+    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
     ID_         : str   = str(uuid4())
     
     payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)

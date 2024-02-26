@@ -9,6 +9,8 @@ import os
 import shutil
 from pathlib import Path, PosixPath
 
+from config.config_files import configfiles
+
 from log.genlog import genlog
 # |--------------------------------------------------------------------------------------------------------------------|
 
@@ -20,8 +22,8 @@ class GenDataDir(object):
         """
         Initialize the GenDataDir
         """
-        self.root_path  : PosixPath = Path("nash")
-        self.data_dir   : PosixPath = Path("data")
+        self.root_path  : PosixPath = Path(configfiles.dot_ini['bindata']['bindata:path']['root'])
+        self.data_dir   : PosixPath = Path(configfiles.dot_ini['bindata']['bindata:path']['dir'])
         self.path_      : PosixPath = Path(self.root_path, self.data_dir)
         
         self.exist_or_not: bool = False
