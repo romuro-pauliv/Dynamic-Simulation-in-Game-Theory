@@ -20,5 +20,13 @@ if __name__ == "__main__":
     core_chunk.define_function(simulate)
     core_chunk.run()
     
+    
+    # Analysis |--------------------------------------------------------------|
     from graph.read_all_bin import ReadAllBin
     read_all_bin: ReadAllBin = ReadAllBin()
+    
+    from graph.analysis.dist import Dist
+    dist: Dist = Dist(read_all_bin.data)
+    dist.payoff_dist()
+    dist.end_cumsum_dist()
+    # |-----------------------------------------------------------------------|
