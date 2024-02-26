@@ -8,7 +8,7 @@ from uuid import uuid4
 def simulate() -> None:
     PLAYERS     : int = 4
     STRATEGY    : int = 2
-    ITERATIONS  : int = 1000000
+    ITERATIONS  : int = 100
     MIN_RANGE   : float = -1
     MAX_RANGE   : float = 1
     ID_         : str   = str(uuid4())
@@ -32,9 +32,12 @@ def simulate() -> None:
 
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
+    from resources.generate_data_dir import generate_data_dir
+    generate_data_dir.delete(), generate_data_dir.create()
+    
     from core.multiprocessing import CoreChunk
 
-    core_chunk: CoreChunk = CoreChunk(1, 10)
+    core_chunk: CoreChunk = CoreChunk(1, 100)
     core_chunk.define_function(simulate)
     core_chunk.run()
