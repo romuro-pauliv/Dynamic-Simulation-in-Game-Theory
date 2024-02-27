@@ -27,6 +27,8 @@ if __name__ == "__main__":
     
     from graph.analysis.dist import Dist
     dist: Dist = Dist(read_all_bin.data)
-    dist.payoff_dist()
-    dist.end_cumsum_dist()
+    dist.plot_payoff_dist()
+    dist.plot_cumsum_dist()
+    dist.plot_boxplot_cumsum_dist()
+    dist.show()
     # |-----------------------------------------------------------------------|

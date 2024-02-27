@@ -33,7 +33,9 @@ def simulate() -> None:
         # Algorithms to each player |------------------------------------|
         P1 = choices.algorithms.get_maxsum(matrix[0], 0)
         P2 = choices.algorithms.get_less_negative(matrix[1], 1)
-        historic.append(choices.get_payoffs(matrix, (P1, P2)))
+        P3 = choices.algorithms.randomize(STRATEGY)
+        P4 = choices.algorithms.get_maxsum(matrix[3], 3)
+        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
         # |--------------------------------------------------------------|
     
     historic: np.ndarray = np.array(historic)

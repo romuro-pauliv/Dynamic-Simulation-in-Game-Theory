@@ -37,8 +37,7 @@ class Algorithms(object):
         >>> C_maxsum = np.array(C[0].sum(), C[1].sum())
         >>> R_maxsum = ...
         
-        >>> C_choice = np.argmax(C_maxsum)
-        >>> R_choice = ...
+        >>> choice = np.argmax([C_maxsum, R_maxsum])
         
         Returns:
             int: the choice that the algorithm Chose
