@@ -7,7 +7,7 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import numpy as np
 
-from typing import Callable
+from typing import Callable, Union
 # | -------------------------------------------------------------------------------------------------------------------|
 
 class Algorithms(object):
@@ -22,6 +22,8 @@ class Algorithms(object):
         """
         self.choice_index: np.ndarray = choice_index
         self.n_players   : int        = len(self.choice_index)
+        
+        self.coletive_less_negative_index_cache: Union[None, int] = None
                     
     def get_maxsum(self, player_payoff_matrix: np.ndarray, player_index: int) -> int:
         """
@@ -50,6 +52,22 @@ class Algorithms(object):
         
         return np.argmax(np.array(payoff_sum))
     
+    def get_coletive_less_negative(self, all_payoff_matrix: np.ndarray, player_index: int) -> int:
+        if self.coletive_less_negative_index_cache == None:
+            list_risk: list[np.float64] = []
+        
+            for n in range(all_payoff_matrix.shape[1]):
+                situation_array: np.ndarray = all_payoff_matrix[:, n]
+                list_risk.append(np.sum(situation_array[situation_array < 0]))
+
+            self.coletive_less_negative_index_cache: int = np.argmax(list_risk)
+            return np.where(self.choice_index[player_index] == np.argmax(list_risk))[0][0]
+        else:
+            return np.where(self.choice_index[player_index] == self.coletive_less_negative_index_cache)[0][0]
+    
+    def clear_cache(self) -> None:
+        self.coletive_less_negative_index_cache: Union[None, int] = None
+        
     def get_less_negative(self, player_payoff_matrix: np.ndarray, player_index: int) -> int:
         """
         Based the choice in the strategy with the lowest negative return

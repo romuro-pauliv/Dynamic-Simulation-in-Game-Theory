@@ -29,14 +29,16 @@ def simulate() -> None:
     historic: list[np.ndarray] = []
     for _ in range(ITERATIONS):
         matrix = payoff_gen.gen_random_payoff_matrix()
-        
+
         # Algorithms to each player |------------------------------------|
-        P1 = choices.algorithms.get_maxsum(matrix[0], 0)
-        P2 = choices.algorithms.get_less_negative(matrix[1], 1)
-        P3 = choices.algorithms.randomize(STRATEGY)
+        P1 = choices.algorithms.get_coletive_less_negative(matrix, 0)
+        P2 = choices.algorithms.randomize(STRATEGY)
+        P3 = choices.algorithms.get_less_negative(matrix[2], 2)
         P4 = choices.algorithms.get_maxsum(matrix[3], 3)
         historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
         # |--------------------------------------------------------------|
+        
+        choices.algorithms.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(ID_, historic)
