@@ -7,7 +7,7 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import numpy as np
 
-from typing import Callable, Union
+from controller.algorithms import Single, Group
 # | -------------------------------------------------------------------------------------------------------------------|
 
 class Algorithms(object):
@@ -23,79 +23,16 @@ class Algorithms(object):
         self.choice_index: np.ndarray = choice_index
         self.n_players   : int        = len(self.choice_index)
         
-        self.coletive_less_negative_index_cache: Union[None, int] = None
-                    
-    def get_maxsum(self, player_payoff_matrix: np.ndarray, player_index: int) -> int:
-        """
-        Get the choice based on the sum of payoffs
-        Args:
-            player_payoff_matrix (np.ndarray): Player payoff matrix
-            player_index (int): The index of the player
-
-        With C and R as possibles choices and index[0] and index[1] to strategy S and T
-        >>> C = np.array([[2, 4], [4, 4]])    
-        >>> R = np.array([[4, 5], [1, 3]])
-        
-        >>> C_maxsum = np.array(C[0].sum(), C[1].sum())
-        >>> R_maxsum = ...
-        
-        >>> choice = np.argmax([C_maxsum, R_maxsum])
-        
-        Returns:
-            int: the choice that the algorithm Chose
-        """
-        maxsum: Callable[[np.ndarray, np.ndarray], np.float64] = lambda pp, ind: np.sum(pp[ind])
-        
-        payoff_sum: list[np.float64] = []
-        for ind in self.choice_index[player_index]:
-            payoff_sum.append(maxsum(player_payoff_matrix, ind))
-        
-        return np.argmax(np.array(payoff_sum))
+        self.single_class: Single = Single(self.choice_index)
+        self.group_class : Group  = Group(self.choice_index)
     
-    def get_coletive_less_negative(self, all_payoff_matrix: np.ndarray, player_index: int) -> int:
-        if self.coletive_less_negative_index_cache == None:
-            list_risk: list[np.float64] = []
-        
-            for n in range(all_payoff_matrix.shape[1]):
-                situation_array: np.ndarray = all_payoff_matrix[:, n]
-                list_risk.append(np.sum(situation_array[situation_array < 0]))
-
-            self.coletive_less_negative_index_cache: int = np.argmax(list_risk)
-            return np.where(self.choice_index[player_index] == np.argmax(list_risk))[0][0]
-        else:
-            return np.where(self.choice_index[player_index] == self.coletive_less_negative_index_cache)[0][0]
+    @property
+    def single(self) -> Single:
+        return self.single_class
     
-    def clear_cache(self) -> None:
-        self.coletive_less_negative_index_cache: Union[None, int] = None
-        
-    def get_less_negative(self, player_payoff_matrix: np.ndarray, player_index: int) -> int:
-        """
-        Based the choice in the strategy with the lowest negative return
-        Args:
-            player_payoff_matrix (np.ndarray): Player payoff matrix
-            player_index (int): The index of the player
-
-        Returns:
-            int: The choice that the algorithm chose.
-        """
-        payoff_sum_negative: list[np.float64] = []
-        
-        for ind in self.choice_index[player_index]:
-            choice: np.ndarray = player_payoff_matrix[ind]
-            payoff_sum_negative.append(np.sum(choice[choice < 0]))
-            
-        return np.argmax(np.array(payoff_sum_negative))
-    
-    def randomize(self, qnt_strategy: int) -> int:
-        """
-        Random strategy
-        Args:
-            qnt_strategy (int): Strategy options
-
-        Returns:
-            int: The choice that the algorithm chose
-        """
-        return np.random.choice(range(qnt_strategy))
+    @property
+    def group(self) -> Group:
+        return self.group_class
 
 class Choices(object):
     def __init__(self, choice_index: np.ndarray, possibilities: list[tuple[int]]) -> None:
