@@ -16,7 +16,17 @@ import numpy as np
 # |--------------------------------------------------------------------------------------------------------------------|
 
 
-def simulate() -> None:
+def simulate_0() -> None:
+    """
+    Saves the simulation history in .bin file.
+    
+    The strucuture of .bin file:
+    Where PORL (PayOff Result Line) = array([PO_p0, PO_p1, ..., PO_pn])
+    POH = array(PORL[i=0], PORL[i=1], ..., PORL[i=iterations])
+    
+    Then:
+    PORL[1xPlayers] -> POH[IterationsxPlayers] where the matrix data is the payoffs.
+    """
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
     STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
     ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
@@ -28,12 +38,13 @@ def simulate() -> None:
     choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
     payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
     historic: list[np.ndarray] = []
+    
     for _ in range(ITERATIONS):
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.group.sum_payoffs(matrix, 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmin)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        P2: int = choices.algorithms.single.sum_negative_payoffs(matrix[1], 1, np.argmax)
         
         historic.append(choices.get_payoffs(matrix, (P1, P2)))
         # |--------------------------------------------------------------|

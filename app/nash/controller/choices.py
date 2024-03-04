@@ -49,12 +49,15 @@ class Choices(object):
     def get_payoffs(self, matrix: np.ndarray, choice: tuple[int]) -> np.ndarray:
         """
         Get the results based on payoffs matrix
+        Return array type:
+        >>> array([PO_p0, PO_p1, ..., PO_pn])
+        Such that PO_pn = Player n payoff
         Args:
             matrix (np.ndarray): Payoff matrix
             choice (tuple[int]): The group choice
 
         Returns:
-            np.ndarray: payoffs
+            np.ndarray: player's payoffs
         """
         master_index: int = self.possibilites.index(choice)
         
