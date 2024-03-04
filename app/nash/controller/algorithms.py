@@ -56,19 +56,29 @@ class Group(object):
         self.sum_negative_PO_cache  : dict[Callable[[np.ndarray], int], int] = {}
     
     def sum_payoffs(self, APOM: np.ndarray, player_index: int, decision: Callable[[np.ndarray], int]) -> int:
-        payoff_sum: list[np.float64] = []
-        for n in range(APOM.shape[1]):
-            situation_array: np.ndarray = APOM[:, n]
-            payoff_sum.append(np.sum(situation_array))
+        try:
+            choice_index: int = self.sum_PO_cache[decision]
+            return np.where(self.choice_index[player_index] == choice_index)[0][0]
+        except Exception:    
+            payoff_sum: list[np.float64] = []
+            for n in range(APOM.shape[1]):
+                situation_array: np.ndarray = APOM[:, n]
+                payoff_sum.append(np.sum(situation_array))
         
-        choice_index: int = decision(payoff_sum)
-        return np.where(self.choice_index[player_index] == choice_index)[0][0]
+            choice_index: int = decision(payoff_sum)
+            self.sum_PO_cache[decision] = choice_index          # Add cache
+            return np.where(self.choice_index[player_index] == choice_index)[0][0]
 
     def sum_negative_payoffs(self, APOM: np.ndarray, player_index: int, decision: Callable[[np.ndarray], int]) -> int:
-        payoff_negative_sum: list[np.float64] = []
-        for n in range(APOM.shape[1]):
-            situation_array: np.ndarray = APOM[:, n]
-            payoff_negative_sum.append(np.sum(situation_array[situation_array < 0]))
+        try:
+            choice_index: int = self.sum_negative_PO_cache[decision]
+            return np.where(self.choice_index[player_index] == choice_index)[0][0]
+        except Exception:
+            payoff_negative_sum: list[np.float64] = []
+            for n in range(APOM.shape[1]):
+                situation_array: np.ndarray = APOM[:, n]
+                payoff_negative_sum.append(np.sum(situation_array[situation_array < 0]))
         
-        choice_index: int = decision(payoff_negative_sum)
-        return np.where(self.choice_index[player_index] == choice_index)[0][0]
+            choice_index: int = decision(payoff_negative_sum)
+            self.sum_negative_PO_cache[decision] = choice_index # Add cache
+            return np.where(self.choice_index[player_index] == choice_index)[0][0]

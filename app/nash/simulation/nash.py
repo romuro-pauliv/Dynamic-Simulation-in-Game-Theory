@@ -34,11 +34,14 @@ def simulate() -> None:
         P1: int = choices.algorithms.group.sum_negative_payoffs(matrix, 0, np.argmax)
         P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmax)
         P3: int = choices.algorithms.group.sum_negative_payoffs(matrix, 2, np.argmax)
+        
         P4: int = choices.algorithms.group.sum_negative_payoffs(matrix, 3, np.argmax)
         P5: int = choices.algorithms.group.sum_negative_payoffs(matrix, 4, np.argmax)
         
         historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
         # |--------------------------------------------------------------|
+
+        choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(ID_, historic)
