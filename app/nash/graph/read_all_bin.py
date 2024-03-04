@@ -28,6 +28,7 @@ class ReadAllBin(GenBin):
         Get all binary filenames
         """
         self.bin_filenames: list[str] = os.listdir(PATH_)
+        self.bin_filenames.sort()
     
     def read(self) -> None:
         """

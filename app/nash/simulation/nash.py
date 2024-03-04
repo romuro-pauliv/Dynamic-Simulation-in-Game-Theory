@@ -10,6 +10,7 @@ from controller.choices     import Choices
 from resources.generate_bin import GenBin
 from config.config_files    import configfiles
 
+from datetime               import datetime
 from uuid                   import uuid4
 import numpy as np
 # |--------------------------------------------------------------------------------------------------------------------|
@@ -31,17 +32,13 @@ def simulate() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.group.sum_negative_payoffs(matrix, 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_negative_payoffs(matrix, 2, np.argmax)
+        P1: int = choices.algorithms.group.sum_payoffs(matrix, 0, np.argmax)
+        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmin)
         
-        P4: int = choices.algorithms.group.sum_negative_payoffs(matrix, 3, np.argmax)
-        P5: int = choices.algorithms.group.sum_negative_payoffs(matrix, 4, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
-    GenBin.save(ID_, historic)
+    GenBin.save(f"{datetime.now()}_{ID_}", historic)
