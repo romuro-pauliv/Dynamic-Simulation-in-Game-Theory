@@ -77,7 +77,7 @@ $$\gamma :  [\xi{-}, \xi{+}]^{Q \times Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
 Therefore, to obtain the payoff for player $P_{Q}$:
 
-$$p(P_{Q}) = T^{Q}_{\gamma(\varphi_{Q})\dots\gamma(\varphi_{i})}$$
+$$p(P_{Q}) = T^{Q}_{\gamma(\varphi_{Q}) \dots \gamma(\varphi_{i})}$$
 
 
 ### Arrangements
