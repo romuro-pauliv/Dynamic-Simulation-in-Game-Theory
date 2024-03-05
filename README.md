@@ -16,9 +16,9 @@ This approach provides insights into the effectiveness of strategies on average,
 
 ### Auto Tensor Payoffs
 
-Initially, we consider player \(P_{1}\) with the payoff matrix \(A_{N \times N}\), where \( A \in [\xi{-}, \xi{+}]^{N \times N} \), and player \(P_{2}\) with the payoff matrix \(B_{N \times N}\), where \(B \in [\xi{-}, \xi{+}]^{N \times N}\). 
+Initially, we consider player $P_{1}$ with the payoff matrix $A_{N \times N}$, where $A \in [\xi{-}, \xi{+}]^{N \times N}$, and player $P_{2}$ with the payoff matrix $B_{N \times N}$, where $B \in [\xi{-}, \xi{+}]^{N \times N}$. 
 
-\[ A_{N \times N} = \begin{bmatrix}
+$$A_{N \times N} = \begin{bmatrix}
 a_{11} & a_{12} & \dots & a_{1n}\\
 \vdots & \vdots & \ddots & \vdots \\
 a_{n1} & a_{n2} & \dots & a_{nn}
@@ -27,36 +27,36 @@ b_{11} & b_{12} & \dots & b_{1n}\\
 \vdots & \vdots & \ddots & \vdots \\
 b_{n1} & b_{n2} & \dots & b_{nn}
 \end{bmatrix}
-\]
+$$
 
-The number of rows corresponds to the number of possible strategies for the choice. If \(P_{1}\) chooses strategy \(k\) based on their payoff matrix \(A_{N \times N}\), we have:
+The number of rows corresponds to the number of possible strategies for the choice. If $P_{1}$ chooses strategy $k$ based on their payoff matrix $A_{N \times N}$, we have:
 
-\[ A_{1 \times N} = \begin{bmatrix} a_{k1} & a_{k2} & \dots & a_{kn} \end{bmatrix} \]
+$$A_{1 \times N} = \begin{bmatrix} a_{k1} & a_{k2} & \dots & a_{kn} \end{bmatrix}$$
 
-Similarly, player \(P_{2}\) chooses strategy \(j\) based on their payoff matrix \(B_{N \times N}\):
+Similarly, player $P_{2}$ chooses strategy $j$ based on their payoff matrix $B_{N \times N}$:
 
-\[ B_{1 \times N} = \begin{bmatrix} b_{j1} & b_{j2} & \dots & b_{jn} \end{bmatrix} \]
+$$B_{1 \times N} = \begin{bmatrix} b_{j1} & b_{j2} & \dots & b_{jn} \end{bmatrix}$$
 
-It is important to note that the payoff assigned to player \(P_{1}\) due to strategy \(k\) is strictly dependent on the choice \(j\) of player \(P_{2}\). Thus, the payoff \(p\) for \(P_{1}\) and \(P_{2}\) is given by:
+It is important to note that the payoff assigned to player $P_{1}$ due to strategy $k$ is strictly dependent on the choice $j$ of player $P_{2}$. Thus, the payoff $p$ for $P_{1}$ and $P_{2}$ is given by:
 
-\[ p(P_{1}) = A_{kj}, \quad p(P_{2}) = B_{jk} \]
+$$p(P_{1}) = A_{kj}, \quad p(P_{2}) = B_{jk}$$
 
-In the algorithm, the strategy choice is made through the function \(E(M_{N \times N})\):
+In the algorithm, the strategy choice is made through the function $E(M_{N \times N})$:
 
-\[ E:  [\xi{-}, \xi{+}]^{N \times N} \rightarrow  \{0, 1, 2, \ldots, N\} \]
+$$E:  [\xi{-}, \xi{+}]^{N \times N} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
-Thus, to obtain the payoff \(p\) for \(P_{1}\) and \(P_{2}\):
+Thus, to obtain the payoff $p$ for $P_{1}$ and $P_{2}$:
 
-\[ p(P_{1}) = A_{E(A) E(B)}, \quad p(P_{2}) = B_{E(B) E(A)} \]
+$$p(P_{1}) = A_{E(A) E(B)}, \quad p(P_{2}) = B_{E(B) E(A)}$$
 
-Generalizing to a quantity \(P_{Q}\) of players, where each player has their \(Q\)-dimensional matrix represented by the tensor \(T^{Q}\):
+Generalizing to a quantity $P_{Q}$ of players, where each player has their $Q$-dimensional matrix represented by the tensor $T^{Q}$:
 
-\[ T \in [\xi{-}, \xi{+}]^{Q} \]
+$$T \in [\xi{-}, \xi{+}]^{Q}$$
 
-Thus, the strategy selection function \(E(T^{Q})\) is defined as:
+Thus, the strategy selection function $E(T^{Q})$ is defined as:
 
-\[ E:  [\xi{-}, \xi{+}]^{Q} \rightarrow  \{0, 1, 2, \ldots, N\} \]
+$$E:  [\xi{-}, \xi{+}]^{Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
-Consequently, for each \(P_{1}, P_{2}, \dots, P_{Q}\) with tensors of payoffs \(T^{1}, T^{2}, \dots, T^{Q}\), we obtain the payoff \(p\) for player \(P_{Q}\):
+Consequently, for each $P_{1}, P_{2}, \dots, P_{Q}$ with tensors of payoffs $T^{1}, T^{2}, \dots, T^{Q}$, we obtain the payoff $p$ for player $P_{Q}$:
 
-\[ p(P_{Q}) = T_{E(T^{Q}) \dots E(T^{i})} \]
+$$p(P_{Q}) = T_{E(T^{Q}) \dots E(T^{i})}$$
