@@ -14,7 +14,7 @@ This approach provides insights into the effectiveness of strategies on average,
 ---
 ## Simulation Algorithm
 
-### Auto Tensor Payoffs
+### Single Tensor Payoffs (STP)
 
 Initially, we consider player $P_{1}$ with the payoff matrix $A_{N \times N}$, where $A \in [\xi{-}, \xi{+}]^{N \times N}$, and player $P_{2}$ with the payoff matrix $B_{N \times N}$, where $B \in [\xi{-}, \xi{+}]^{N \times N}$. 
 
@@ -60,3 +60,34 @@ $$E:  [\xi{-}, \xi{+}]^{Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 Consequently, for each $P_{1}, P_{2}, \dots, P_{Q}$ with tensors of payoffs $T^{1}, T^{2}, \dots, T^{Q}$, we obtain the payoff $p$ for player $P_{Q}$:
 
 $$p(P_{Q}) = T_{E(T^{Q}) \dots E(T^{i})}$$
+
+### Collective Tensor Payoffs (CTP)
+
+When the strategy decision function $E$ requires the payoff tensors from other players $E(T^{1}, T^{2}, \dots, T^{Q})$, we can define $\varphi = \begin{bmatrix}T^{1}, T^{2}, \dots, T^{Q} \end{bmatrix}$, therefore:
+
+$$\varphi \in [\xi{-}, \xi{+}]^{Q \times Q}$$
+
+It is necessary to note that, for players $P_{1}$ and $P_{2}$, there exist $\varphi_{1}$ and $\varphi_{2}$ where $\varphi_{1} \neq \varphi_{2}$ due to the arrangement of elements in the matrix:
+
+$$\begin{bmatrix} T^{1} & T^{2} & \dots & T^{Q}\end{bmatrix} \neq  \begin{bmatrix} T^{2} & T^{1} & \dots & T^{Q}\end{bmatrix}$$
+
+So, for the function $E$ that receives $\varphi$, we define $\gamma$:
+
+$$\gamma :  [\xi{-}, \xi{+}]^{Q \times Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
+
+Therefore, to obtain the payoff for player $P_{Q}$:
+
+$$p(P_{Q}) = T^{Q}_{\gamma(\varphi_{Q})\dots\gamma(\varphi_{i})}$$
+
+
+### Arrangements
+
+The goal of the simulation is to be used with various arrangements of strategy decision functions. As we have seen before, strategy decision functions are subdivided into two groups (STP and CTP). For each of these groups, we can have numerous different functions with distinct methods for choosing the strategy.
+
+As an example, for players $P_{1}, P_{2}, P_{3}$, we have the decision functions $E_{a}, E_{b}, \gamma_{c}$. Therefore, to obtain the payoffs of the players:
+
+$$p(P_{1}) = T^{1}_{E_{a}(T^{1})E_{b}(T^{2})\gamma_{c}(\varphi^{3})}\\p(P_{2}) = T^{2}_{E_{b}(T^{2})E_{a}(T^{1})\gamma_{c}(\varphi^{3})}\\p(P_{3}) = T^{3}_{\gamma_{c}(\varphi^{3})E_{a}(T^{1})E_{b}(T^{2})}$$
+
+
+### Algorithm Performance
+
