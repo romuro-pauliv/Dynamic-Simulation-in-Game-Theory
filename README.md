@@ -3,13 +3,13 @@
 
 ### Summary
 
-1. [Installation](/docs/installation.md)
-2. [Quickstart - Run the simulation]()
-3. [Algorithm Structure](/README.md#simulation-algorithm-structure)
-3.1 [Single Tensor Payoffs (STP)](/README.md#single-tensor-payoffs-stp)
-3.2 [Collective Tensor Payoffs (CTP)](/README.md#collective-tensor-payoffs-ctp)
-3.3 [Arrangements](/README.md#arrangements)
-3.4 [Algorithm Performance](/README.md#algorithm-performance)
+- [Installation](/docs/installation.md)
+- [Quickstart - Run the simulation]()
+    - [Algorithm Structure](/README.md#simulation-algorithm-structure)
+    - [Single Tensor Payoffs (STP)](/README.md#single-tensor-payoffs-stp)
+    - [Collective Tensor Payoffs (CTP)](/README.md#collective-tensor-payoffs-ctp)
+    - [Arrangements](/README.md#arrangements)
+    - [Algorithm Performance](/README.md#algorithm-performance)
 
 
 ---
@@ -54,13 +54,18 @@ Thus, to obtain the payoff $p$ for $P_{1}$ and $P_{2}$:
 
 $$p(P_{1}) = A_{E(A) E(B)}, \quad p(P_{2}) = B_{E(B) E(A)}$$
 
-Generalizing to a quantity $P_{Q}$ of players, where each player has their $Q$-dimensional matrix represented by the tensor $T^{Q}$:
+Generalizing for a quantity of $P_{Q}$ players, the payoff matrix of each player $M_{Q}$ increases in dimension as new players are included. Therefore, for a set of $Q$ players, we will have $Q$ dimensions in the payoff matrix $M_{Q}$. We can then define the tensor $T$ to represent the matrix $M_{Q}$, which is $Q$-dimensional, and whose dimension is determined by: 
 
-$$T \in [\xi{-}, \xi{+}]^{Q}$$
+```math
+\Omega = \underbrace{N \times N \times \dots \times N}_{Q}
+```
+
+
+$$T \in [\xi{-}, \xi{+}]^{\Omega}$$
 
 Thus, the strategy selection function $E(T^{Q})$ is defined as:
 
-$$E:  [\xi{-}, \xi{+}]^{Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
+$$E:  [\xi{-}, \xi{+}]^{\Omega} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
 Consequently, for each $P_{1}, P_{2}, \dots, P_{Q}$ with tensors of payoffs $T^{1}, T^{2}, \dots, T^{Q}$, we obtain the payoff $p$ for player $P_{Q}$:
 
@@ -72,7 +77,7 @@ When the strategy decision function $E$ requires the payoff tensors from other p
 
 $$\varphi = \begin{bmatrix}T^{1} & T^{2} & \dots & T^{Q} \end{bmatrix}$$
 
-$$\varphi \in [\xi{-}, \xi{+}]^{Q \times Q}$$
+$$\varphi \in [\xi{-}, \xi{+}]^{\Omega \times Q}$$
 
 It is necessary to note that, for players $P_{1}$ and $P_{2}$, there exist $\varphi_{1}$ and $\varphi_{2}$ where $\varphi_{1} \neq \varphi_{2}$ due to the arrangement of elements in the matrix:
 
@@ -80,7 +85,7 @@ $$\begin{bmatrix} T^{1} & T^{2} & \dots & T^{Q}\end{bmatrix} \neq  \begin{bmatri
 
 So, for the function $E$ that receives $\varphi$, we define $\gamma$:
 
-$$\gamma :  [\xi{-}, \xi{+}]^{Q \times Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
+$$\gamma :  [\xi{-}, \xi{+}]^{\Omega \times Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
 Therefore, to obtain the payoff for player $P_{Q}$:
 
