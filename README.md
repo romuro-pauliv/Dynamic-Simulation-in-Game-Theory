@@ -5,7 +5,7 @@
 
 - [Installation](/docs/installation.md)
 - [Quickstart - Run the simulation]()
-    - [Algorithm Structure](/README.md#simulation-algorithm-structure)
+- [Algorithm Structure](/README.md#simulation-algorithm-structure)
     - [Single Tensor Payoffs (STP)](/README.md#single-tensor-payoffs-stp)
     - [Collective Tensor Payoffs (CTP)](/README.md#collective-tensor-payoffs-ctp)
     - [Arrangements](/README.md#arrangements)
@@ -13,7 +13,7 @@
 
 
 ---
-In the simulation, $P$ players make choices over $I$ iterations, each opting for one of $N$ strategies. In each iteration, a payoff matrix $T_{\Omega}$ is generated with random values $t \in [\xi {-}, \xi {+}]$, representing rewards or penalties for players' decisions. Each player employs an algorithm $E(T_{\Omega})$, where $E: [\xi{-}, \xi{+}]^{\Omega} \to \{ 0, 1, 2, ..., N\}$, to maximize their payoff over time. The results are accumulated during the $I$ iterations, enabling the assessment of the average performance of strategies.
+In the simulation, $P$ players make choices over $I$ iterations, each opting for one of $N$ strategies. In each iteration, a payoff tensor $T_{\Omega}$ is generated with random values $t \in [\xi {-}, \xi {+}]$, representing rewards or penalties for players' decisions. Each player employs an algorithm $E(T_{\Omega})$, where $E: [\xi{-}, \xi{+}]^{\Omega} \to \{ 0, 1, 2, ..., N\}$, to maximize their payoff over time. The results are accumulated during the $I$ iterations, enabling the assessment of the average performance of strategies.
 
 ## Simulation Algorithm Structure
 
