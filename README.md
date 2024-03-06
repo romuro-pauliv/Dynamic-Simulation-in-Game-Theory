@@ -1,18 +1,23 @@
-# Generalized Nash Equilibrium Simulation
+# Dynamic Simulation in Game Theory
+---
+
+### Summary
+
+1. [Installation](/docs/installation.md)
+2. [Quickstart - Run the simulation]()
+3. [Algorithm Structure](/README.md#simulation-algorithm-structure)
+3.1 [Single Tensor Payoffs (STP)](/README.md#single-tensor-payoffs-stp)
+3.2 [Collective Tensor Payoffs (CTP)](/README.md#collective-tensor-payoffs-ctp)
+3.3 [Arrangements](/README.md#arrangements)
+3.4 [Algorithm Performance](/README.md#algorithm-performance)
+
+
 ---
 In the simulation, $P$ players make choices over $I$ iterations, each opting for one of $N$ strategies. In each iteration, a payoff matrix $M_{[N \times N]}$ is generated with random values $m \in [\xi {-}, \xi {+}]$, representing rewards or penalties for players' decisions. Each player employs an algorithm $E(M_{N \times N})$, where $E: [\xi{-}, \xi{+}]^{N \times N} \to \{ 0, 1, 2, ..., N\}$, to maximize their payoff over time. The results are accumulated during the $I$ iterations, enabling the assessment of the average performance of strategies.
 
 This approach provides insights into the effectiveness of strategies on average, exploring variability introduced by random payoff matrices in dynamic or stochastic environments.
 
----
-
-### Summary
-
-1. [installation](/docs/installation.md)
-
-
----
-## Simulation Algorithm
+## Simulation Algorithm Structure
 
 ### Single Tensor Payoffs (STP)
 
@@ -77,17 +82,17 @@ $$\gamma :  [\xi{-}, \xi{+}]^{Q \times Q} \rightarrow  \{0, 1, 2, \ldots, N\}$$
 
 Therefore, to obtain the payoff for player $P_{Q}$:
 
-$$p(P_{Q}) = T^{Q}_{\gamma(\varphi_{Q}) \dots \gamma(\varphi_{i})}$$
-
+$$ p(P_{Q}) = T^{Q}_{\gamma(\varphi_{Q}) \dots \gamma(\varphi_{i})} $$
 
 ### Arrangements
 
-The goal of the simulation is to be used with various arrangements of strategy decision functions. As we have seen before, strategy decision functions are subdivided into two groups (STP and CTP). For each of these groups, we can have numerous different functions with distinct methods for choosing the strategy.
+The goal of the simulation is to be used with various arrangements of strategy decision functions. As seen earlier, strategy decision functions are divided into two groups (STP and CTP). For each of these groups, we can have numerous different functions with distinct methods for choosing the strategy.
 
-As an example, for players $P_{1}, P_{2}, P_{3}$, we have the decision functions $E_{a}, E_{b}, \gamma_{c}$. Therefore, to obtain the payoffs of the players:
+For example, for players $P_{1}, P_{2}, P_{3}$, we have the decision functions $E_{a}, E_{b}, \gamma_{c}$. Therefore, to obtain the payoffs of the players:
 
-$$p(P_{1}) = T^{1}_{E_{a}(T^{1})E_{b}(T^{2})\gamma_{c}(\varphi^{3})}\\p(P_{2}) = T^{2}_{E_{b}(T^{2})E_{a}(T^{1})\gamma_{c}(\varphi^{3})}\\p(P_{3}) = T^{3}_{\gamma_{c}(\varphi^{3})E_{a}(T^{1})E_{b}(T^{2})}$$
-
+$$ p(P_{1}) = T^{1}_{E_{a}(T^{1})E_{b}(T^{2})\gamma_{c}(\varphi^{3})} \\
+p(P_{2}) = T^{2}_{E_{b}(T^{2})E_{a}(T^{1})\gamma_{c}(\varphi^{3})} \\
+p(P_{3}) = T^{3}_{\gamma_{c}(\varphi^{3})E_{a}(T^{1})E_{b}(T^{2})} $$
 
 ### Algorithm Performance
 
