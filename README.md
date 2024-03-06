@@ -90,8 +90,8 @@ The goal of the simulation is to be used with various arrangements of strategy d
 
 For example, for players $P_{1}, P_{2}, P_{3}$, we have the decision functions $E_{a}, E_{b}, \gamma_{c}$. Therefore, to obtain the payoffs of the players:
 
-\[ p(P_{1}) = T^{1}_{E_{a}(T^{1})E_{b}(T^{2})\gamma_{c}(\varphi^{3})} \\
-p(P_{2}) = T^{2}_{E_{b}(T^{2})E_{a}(T^{1})\gamma_{c}(\varphi^{3})} \\
+\[ p(P_{1}) = T^{1}_{E_{a}(T^{1})E_{b}(T^{2})\gamma_{c}(\varphi^{3})} \newline
+p(P_{2}) = T^{2}_{E_{b}(T^{2})E_{a}(T^{1})\gamma_{c}(\varphi^{3})} \newline
 p(P_{3}) = T^{3}_{\gamma_{c}(\varphi^{3})E_{a}(T^{1})E_{b}(T^{2})} \]
 
 ### Algorithm Performance
