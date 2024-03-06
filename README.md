@@ -13,9 +13,7 @@
 
 
 ---
-In the simulation, $P$ players make choices over $I$ iterations, each opting for one of $N$ strategies. In each iteration, a payoff matrix $M_{[N \times N]}$ is generated with random values $m \in [\xi {-}, \xi {+}]$, representing rewards or penalties for players' decisions. Each player employs an algorithm $E(M_{N \times N})$, where $E: [\xi{-}, \xi{+}]^{N \times N} \to \{ 0, 1, 2, ..., N\}$, to maximize their payoff over time. The results are accumulated during the $I$ iterations, enabling the assessment of the average performance of strategies.
-
-This approach provides insights into the effectiveness of strategies on average, exploring variability introduced by random payoff matrices in dynamic or stochastic environments.
+In the simulation, $P$ players make choices over $I$ iterations, each opting for one of $N$ strategies. In each iteration, a payoff matrix $T_{\Omega}$ is generated with random values $t \in [\xi {-}, \xi {+}]$, representing rewards or penalties for players' decisions. Each player employs an algorithm $E(T_{\Omega})$, where $E: [\xi{-}, \xi{+}]^{\Omega} \to \{ 0, 1, 2, ..., N\}$, to maximize their payoff over time. The results are accumulated during the $I$ iterations, enabling the assessment of the average performance of strategies.
 
 ## Simulation Algorithm Structure
 
@@ -108,3 +106,10 @@ p(P_{3}) = T^{3}_{\gamma_{c}(\varphi^{3})E_{a}(T^{1})E_{b}(T^{2})}
 
 ### Algorithm Performance
 
+To assess the performance of the strategic decision-making functions, $E(T)$ or $\gamma(T)$, it is necessary to iterate them over $I$, generating the matrix $H_{1 \times I} \in [\xi{-}, \xi{+}]^{1 \times I}$:
+
+```math
+H_{1 \times I} = \begin{bmatrix} p_1(P_{Q}) & p_2(P_{Q}) & \dots & p_I(P_{Q}) \end{bmatrix}
+```
+
+Thus, for each player $Q$, we will have a matrix $H_{Q}$, and it is the user's responsibility to analyze the performance of their functions $E$ and $\gamma$ according to their objectives.
