@@ -68,7 +68,7 @@ $$p(P_{Q}) = T_{E(T^{Q}) \dots E(T^{i})}$$
 
 ### Collective Tensor Payoffs (CTP)
 
-When the strategy decision function $E$ requires the payoff tensors from other players $E(T^{1}, T^{2}, \dots, T^{Q})$, we can define $\varphi = \begin{bmatrix}T^{1}, T^{2}, \dots, T^{Q} \end{bmatrix}$, therefore:
+When the strategy decision function $E$ requires the payoff tensors from other players $E(T^{1}, T^{2}, \dots, T^{Q})$, we can define $\varphi = \begin{bmatrix}T^{1} & T^{2} & \dots & T^{Q} \end{bmatrix}$, therefore:
 
 $$\varphi \in [\xi{-}, \xi{+}]^{Q \times Q}$$
 
