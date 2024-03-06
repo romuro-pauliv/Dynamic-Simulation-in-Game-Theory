@@ -10,12 +10,14 @@ import numpy as np
 
 
 class AddBehavior(object):
-    def __init__(self) -> None:
+    def __init__(self, qnt_players: int) -> None:
         """
         Initialize the AddBehavior instance.
         """
         self.stack_behavior_data: dict[str, list[np.ndarray]] = {}
         self.concat_stack_behavior_data: list[np.ndarray] = []
+        
+        self.qnt_players: int = qnt_players
         self.n: int = 0
         
     def add(self, data: list[np.ndarray]) -> None:
@@ -25,7 +27,6 @@ class AddBehavior(object):
             data (list[np.ndarray]): Data in [POH[IxST]][1xP]
         """
         self.stack_behavior_data[self.n] = data
-        self.n_players: int = data[0].shape[1]
         self.n += 1
         
     def concat(self) -> list[np.ndarray]:
@@ -34,7 +35,7 @@ class AddBehavior(object):
         Returns:
             list[np.ndarray]: The behaviors concatenates
         """
-        for p in range(self.n_players):
+        for p in range(self.qnt_players):
             dt: list[np.ndarray] = []
             for n in range(self.n):
                 dt.append(self.stack_behavior_data[n][p])

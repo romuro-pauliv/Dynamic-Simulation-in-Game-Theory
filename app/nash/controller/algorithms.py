@@ -136,3 +136,51 @@ class Group(object):
             choice_index: int = decision(payoff_negative_sum)
             self.sum_negative_PO_cache[decision] = choice_index # Add cache
             return np.where(self.choice_index[player_index] == choice_index)[0][0]
+
+class SelectGroup(object):
+    def __init__(self, choice_index: np.ndarray) -> None:
+        """
+        Initialize the Group instance.
+        Args:
+            choice_index (np.ndarray): The choice indexes
+        """
+        self.choice_index: np.ndarray = choice_index
+
+    def sum_payoffs(self, APOM: np.ndarray, player_index: int, decision: Callable[[np.ndarray], int]) -> int:
+        """
+        Sums the payoffs of the select player and uses the "decision" function to find the strategy based on the sum.
+        Args:
+            APOM (np.ndarray): All PayOffs Matrix [APOM]
+            player_index (int): Player index
+            decision (Callable[[np.ndarray], int]): Function that receives the payoffs sum [np.argmin, np.argmax, ...]
+
+        Returns:
+            int: The player decision
+        """
+        payoff_sum: list[np.float64] = []
+        for n in range(APOM.shape[1]):
+            situation_array: np.ndarray = APOM[:, n]
+            payoff_sum.append(np.sum(situation_array))
+        
+        choice_index: int = decision(payoff_sum)
+        return np.where(self.choice_index[player_index] == choice_index)[0][0]
+
+    def sum_negative_payoffs(self, APOM: np.ndarray, player_index: int, decision: Callable[[np.ndarray], int]) -> int:
+        """
+        Sums the negative payoffs of the select player and uses the "decision" function to find the strategy based on the 
+        sum.
+        Args:
+            APOM (np.ndarray): All PayOffs Matrix [APOM]
+            player_index (int): Player index
+            decision (Callable[[np.ndarray], int]): Function that receives the payoffs sum [np.argmin, np.argmax, ...]
+
+        Returns:
+            int: The player decision
+        """
+        payoff_negative_sum: list[np.float64] = []
+        for n in range(APOM.shape[1]):
+            situation_array: np.ndarray = APOM[:, n]
+            payoff_negative_sum.append(np.sum(situation_array[situation_array < 0]))
+        
+        choice_index: int = decision(payoff_negative_sum)
+        return np.where(self.choice_index[player_index] == choice_index)[0][0]

@@ -7,7 +7,7 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import numpy as np
 
-from controller.algorithms import Single, Group
+from controller.algorithms import Single, Group, SelectGroup
 # | -------------------------------------------------------------------------------------------------------------------|
 
 class Algorithms(object):
@@ -23,9 +23,10 @@ class Algorithms(object):
         self.choice_index: np.ndarray = choice_index
         self.n_players   : int        = len(self.choice_index)
         
-        self.single_class: Single = Single(self.choice_index)
-        self.group_class : Group  = Group(self.choice_index)
-    
+        self.single_class       : Single         = Single(self.choice_index)
+        self.group_class        : Group          = Group(self.choice_index)
+        self.select_group_class : SelectGroup    = SelectGroup(self.choice_index)
+        
     @property
     def single(self) -> Single:
         return self.single_class
@@ -33,6 +34,10 @@ class Algorithms(object):
     @property
     def group(self) -> Group:
         return self.group_class
+    
+    @property
+    def select_group(self) -> SelectGroup:
+        return self.select_group_class
 
 class Choices(object):
     def __init__(self, choice_index: np.ndarray, possibilities: list[tuple[int]]) -> None:
