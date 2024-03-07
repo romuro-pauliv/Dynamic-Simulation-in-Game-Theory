@@ -10,17 +10,18 @@ import seaborn              as sns
 import numpy                as np
 import pandas               as pd
 
-from config.config_files import configfiles
+from calc.transform.add_behavior_matrix import AddBehavior
+from config.config_files                import configfiles
 # |--------------------------------------------------------------------------------------------------------------------|
 
 class Dist(object):
-    def __init__(self, data: list[np.ndarray]) -> None:
+    def __init__(self, behaviors: list[list[np.ndarray]]) -> None:
         """
         Initialize the Dist instance.
         Args:
             data (np.ndarray): Full data from binary files
         """
-        self.data: np.ndarray = data
+        self.data: np.ndarray = self._concat(behaviors)
 
         self._get_labels()
         self._simulation_info()
@@ -29,6 +30,15 @@ class Dist(object):
         self._trans_result_cumsum()
 
         sns.set_theme("paper", "darkgrid", "pastel")
+    
+    def _concat(self, behaviors: list[list[np.ndarray]]) -> list[np.ndarray]:
+        """
+        Concatenates the behaviors data
+        """
+        add_behavior: AddBehavior = AddBehavior(int(configfiles.dot_ini['simulation']['simulate:samples']['times']))
+        for b in behaviors:
+            add_behavior.add(b)
+        return add_behavior.concat()
     
     def _simulation_info(self) -> None:
         PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
@@ -39,6 +49,9 @@ class Dist(object):
         MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
         
         self.simu_info: str = f"P:[{PLAYERS}] S:[{STRATEGY}] R:({MIN_RANGE}, {MAX_RANGE}), ITER:[{ITERATIONS}*{TIMES}]"
+    
+    def define_colors_agents(self, color_list: list[str]) -> None:
+        self.color_list: list[str] = color_list
     
     def _get_labels(self) -> None:
         """
@@ -66,8 +79,8 @@ class Dist(object):
         Payoff distributions
         """
         fig, ax = plt.subplots()
-        for i in range(self.payoff_data_concatenate.shape[1]):
-            sns.kdeplot(self.payoff_data_concatenate[:, i], fill=True, label=self.labels[i], ax=ax)
+        for c, i in zip(self.color_list, range(self.payoff_data_concatenate.shape[1])):
+            sns.kdeplot(self.payoff_data_concatenate[:, i], fill=True, label=self.labels[i], ax=ax, color=c)
         ax.legend()
         ax.set_xlabel("payoffs")
         ax.set_title(f"Payoffs Distribution {self.simu_info}")
@@ -77,8 +90,8 @@ class Dist(object):
         Cumulative payoff distribution
         """
         fig, ax = plt.subplots()
-        for i in range(self.end_dist.shape[1]):
-            sns.kdeplot(self.end_dist[:, i], fill=True, label=self.labels[i], ax=ax)
+        for c, i in zip(self.color_list, range(self.end_dist.shape[1])):
+            sns.kdeplot(self.end_dist[:, i], fill=True, label=self.labels[i], ax=ax, color=c)
         ax.legend()
         ax.set_xlabel("cumulative payoff")
         ax.set_title(f"Comparing Cumulative Payoffs {self.simu_info}")
@@ -89,7 +102,7 @@ class Dist(object):
         """
         fig, ax  = plt.subplots()
         data: pd.DataFrame = pd.DataFrame(self.end_dist, columns=self.labels)
-        sns.boxplot(data=data, fill=True) 
+        sns.boxplot(data=data, fill=True, palette=self.color_list) 
         ax.set_ylabel("cumulative payoff")
         ax.set_title(f"Comparing Cumulative Payoffs {self.simu_info}")
     

@@ -43,12 +43,13 @@ def simulate_0() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.group.sum_negative_payoffs(matrix, 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_negative_payoffs(matrix, 2, np.argmax)
-        P4: int = choices.algorithms.group.sum_negative_payoffs(matrix, 3, np.argmax)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        P2: int = choices.algorithms.group.sum_payoffs(matrix, 1, np.argmax)
+        P3: int = choices.algorithms.group.sum_payoffs(matrix, 2, np.argmax)
+        P4: int = choices.algorithms.group.sum_payoffs(matrix, 3, np.argmax)
+        P5: int = choices.algorithms.group.sum_payoffs(matrix, 4, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -57,16 +58,6 @@ def simulate_0() -> None:
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
 
 def simulate_1() -> None:
-    """
-    Saves the simulation history in .bin file.
-    
-    The strucuture of .bin file:
-    Where PORL (PayOff Result Line) = array([PO_p0, PO_p1, ..., PO_pn])
-    POH = array(PORL[i=0], PORL[i=1], ..., PORL[i=iterations])
-    
-    Then:
-    PORL[1xPlayers] -> POH[IterationsxPlayers] where the matrix data is the payoffs.
-    """
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
     STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
     ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
@@ -83,12 +74,13 @@ def simulate_1() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_negative_payoffs(matrix, 2, np.argmax)
-        P4: int = choices.algorithms.group.sum_negative_payoffs(matrix, 3, np.argmax)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
+        P2: int = choices.algorithms.group.sum_payoffs(matrix, 1, np.argmax)
+        P3: int = choices.algorithms.group.sum_payoffs(matrix, 2, np.argmax)
+        P4: int = choices.algorithms.group.sum_payoffs(matrix, 3, np.argmax)
+        P5: int = choices.algorithms.group.sum_payoffs(matrix, 4, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -97,16 +89,6 @@ def simulate_1() -> None:
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
 
 def simulate_2() -> None:
-    """
-    Saves the simulation history in .bin file.
-    
-    The strucuture of .bin file:
-    Where PORL (PayOff Result Line) = array([PO_p0, PO_p1, ..., PO_pn])
-    POH = array(PORL[i=0], PORL[i=1], ..., PORL[i=iterations])
-    
-    Then:
-    PORL[1xPlayers] -> POH[IterationsxPlayers] where the matrix data is the payoffs.
-    """
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
     STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
     ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
@@ -123,12 +105,13 @@ def simulate_2() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmin)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmin)
-        P4: int = choices.algorithms.single.sum_payoffs(matrix[0], 3, np.argmin)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
+        P2: int = choices.algorithms.single.sum_payoffs(matrix[4], 1, np.argmax)
+        P3: int = choices.algorithms.single.sum_payoffs(matrix[4], 2, np.argmax)
+        P4: int = choices.algorithms.single.sum_payoffs(matrix[4], 3, np.argmax)
+        P5: int = choices.algorithms.single.sum_payoffs(matrix[4], 4, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -137,16 +120,6 @@ def simulate_2() -> None:
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
 
 def simulate_3() -> None:
-    """
-    Saves the simulation history in .bin file.
-    
-    The strucuture of .bin file:
-    Where PORL (PayOff Result Line) = array([PO_p0, PO_p1, ..., PO_pn])
-    POH = array(PORL[i=0], PORL[i=1], ..., PORL[i=iterations])
-    
-    Then:
-    PORL[1xPlayers] -> POH[IterationsxPlayers] where the matrix data is the payoffs.
-    """
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
     STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
     ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
@@ -163,15 +136,51 @@ def simulate_3() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.group.sum_negative_payoffs(matrix, 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_negative_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_negative_payoffs(matrix, 2, np.argmax)
-        P4: int = choices.algorithms.group.sum_negative_payoffs(matrix, 3, np.argmax)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
+        P2: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmin)
+        P3: int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmin)
+        P4: int = choices.algorithms.single.sum_payoffs(matrix[0], 3, np.argmin)
+        P5: int = choices.algorithms.single.sum_payoffs(matrix[4], 4, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
+
+
+# | Imports |----------------------------------------------------------------------------------------------------------|
+from typing                         import Callable
+from resources.generate_data_dir    import GenDataDir
+from core.multiprocessing           import CoreChunk
+from resources.read_all_bin         import ReadAllBin
+# |--------------------------------------------------------------------------------------------------------------------|
+
+
+def init_simulation(simulation: Callable[[None], None]) -> list[np.ndarray]:
+    """
+    Initialize the simulation in multiprocessing. 
+    Args:
+        simulation (Callable[[None], None]): The simulation function
+
+    Such PO = PayOff
+    such i = iterations
+    
+    There is PORL = [PO[player_0], PO[player_1], ..., PO[player_n]] -> matrix PORL[1xplayers]
+    Then: POH = [PORL[i=0], PORL[i=1], ..., PORL[i=iterations]] = -> matrix POH[IterationsxPlayers] -> POH[IxP]
+    
+    This function will return a list of history (POH) with a Simulation Times (ST) size.
+    Returns:
+        list[np.ndarray]: [POH[IxP]][1xST]
+    """
+    generate_data_dir: GenDataDir = GenDataDir()
+    generate_data_dir.delete(), generate_data_dir.create()
+    
+    core_chunk: CoreChunk = CoreChunk()
+    core_chunk.define_function(simulation)
+    core_chunk.run()
+
+    read_all_bin: ReadAllBin = ReadAllBin()
+    return read_all_bin.bin_data
