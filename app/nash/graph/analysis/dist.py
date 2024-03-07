@@ -28,6 +28,7 @@ class Dist(object):
         
         self._trans_payoff_concat()
         self._trans_result_cumsum()
+        self.define_colors_agents()
 
         sns.set_theme("paper", "darkgrid", "pastel")
     
@@ -50,7 +51,16 @@ class Dist(object):
         
         self.simu_info: str = f"P:[{PLAYERS}] S:[{STRATEGY}] R:({MIN_RANGE}, {MAX_RANGE}), ITER:[{ITERATIONS}*{TIMES}]"
     
-    def define_colors_agents(self, color_list: list[str]) -> None:
+    def define_colors_agents(self) -> None:
+        """
+        Defines a color for each player
+        Args:
+            colors_list (list[str]): Color list (length must be equal to the number of players)
+        """
+        color_list  : list[str] = configfiles.dot_ini['simulation']['simulate:info']['colors'].split(",")
+        color_hex   : bool      = bool(int(configfiles.dot_ini['simulation']['simulate:info']['color_hex']))
+        if color_hex == True:
+            color_list: list[str] = [f"#{c}" for c in color_list]
         self.color_list: list[str] = color_list
     
     def _get_labels(self) -> None:

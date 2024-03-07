@@ -7,8 +7,10 @@
 # | Imports |----------------------------------------------------------------------------------------------------------|
 import multiprocessing
 
-from config.config_files import configfiles
-from log.genlog import genlog
+from config.config_files    import configfiles
+from log.genlog             import genlog
+
+from alive_progress import alive_bar
 
 from typing import Callable
 # |--------------------------------------------------------------------------------------------------------------------|
@@ -22,7 +24,8 @@ class CoreChunk(object):
             cpu_off (int): Inform qnt of cpus offs
             processing_times (int): Qnt times to processing the function
         """
-        cpu_off: int = int(configfiles.dot_ini['simulation']['simulate:cores']['core_off'])
+        cpu_off     : int    = int(configfiles.dot_ini['simulation']['simulate:cores']['core_off'])
+        self.verbose: bool   = bool(int(configfiles.dot_ini['simulation']['simulate:info']['verbose']))
         
         self.CPU                : int = multiprocessing.cpu_count()-cpu_off
         self.processing_times   : int = int(configfiles.dot_ini['simulation']['simulate:samples']['times'])
@@ -70,8 +73,15 @@ class CoreChunk(object):
         self._generate_processes()
         chunks: list[list[multiprocessing.Process]] = self._split_in_chunks()
         chunk_len: int = len(chunks)
-        
-        for n, chunk in enumerate(chunks):
-            genlog.report("DEBUG", f"Process chunk [{n}|{chunk_len}]")
-            self._start_processes(chunk)
-            self._join_processes(chunk)
+                        
+        if self.verbose == False:
+            with alive_bar(chunk_len, bar="filling") as bar:
+                for n, chunk in enumerate(chunks):
+                    self._start_processes(chunk)
+                    self._join_processes(chunk)
+                    bar()
+        else:
+            for n, chunk in enumerate(chunks):
+                genlog.report("DEBUG", f"Process chunk [{n}|{chunk_len}]")
+                self._start_processes(chunk)
+                self._join_processes(chunk)

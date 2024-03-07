@@ -44,12 +44,9 @@ def simulate_0() -> None:
 
         # Algorithms to each player |------------------------------------|
         P1: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P2: int = choices.algorithms.group.sum_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_payoffs(matrix, 2, np.argmax)
-        P4: int = choices.algorithms.group.sum_payoffs(matrix, 3, np.argmax)
-        P5: int = choices.algorithms.group.sum_payoffs(matrix, 4, np.argmax)
+        P2: int = choices.algorithms.single.sum_payoffs(matrix[1], 1, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -74,88 +71,23 @@ def simulate_1() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
-        P2: int = choices.algorithms.group.sum_payoffs(matrix, 1, np.argmax)
-        P3: int = choices.algorithms.group.sum_payoffs(matrix, 2, np.argmax)
-        P4: int = choices.algorithms.group.sum_payoffs(matrix, 3, np.argmax)
-        P5: int = choices.algorithms.group.sum_payoffs(matrix, 4, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
-        # |--------------------------------------------------------------|
-
-        choices.algorithms.group.clear_cache()
-    
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
-def simulate_2() -> None:
-    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
-    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
-    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
-    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
-    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
-    ID_         : str   = str(uuid4())
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-
-        # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[4], 1, np.argmax)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[4], 2, np.argmax)
-        P4: int = choices.algorithms.single.sum_payoffs(matrix[4], 3, np.argmax)
-        P5: int = choices.algorithms.single.sum_payoffs(matrix[4], 4, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
-        # |--------------------------------------------------------------|
-
-        choices.algorithms.group.clear_cache()
-    
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
-def simulate_3() -> None:
-    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
-    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
-    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
-    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
-    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
-    ID_         : str   = str(uuid4())
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-
-        # Algorithms to each player |------------------------------------|
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[4], 0, np.argmin)
+        P1: int = choices.algorithms.single.sum_payoffs(matrix[1], 0, np.argmin)
         P2: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmin)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmin)
-        P4: int = choices.algorithms.single.sum_payoffs(matrix[0], 3, np.argmin)
-        P5: int = choices.algorithms.single.sum_payoffs(matrix[4], 4, np.argmax)
         
-        historic.append(choices.get_payoffs(matrix, (P1, P2, P3, P4, P5)))
+        historic.append(choices.get_payoffs(matrix, (P1, P2)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
 
 # | Imports |----------------------------------------------------------------------------------------------------------|
 from typing                         import Callable
 from resources.generate_data_dir    import GenDataDir
 from core.multiprocessing           import CoreChunk
 from resources.read_all_bin         import ReadAllBin
+from colorama                       import Fore, Style
 # |--------------------------------------------------------------------------------------------------------------------|
 
 
@@ -180,6 +112,7 @@ def init_simulation(simulation: Callable[[None], None]) -> list[np.ndarray]:
     
     core_chunk: CoreChunk = CoreChunk()
     core_chunk.define_function(simulation)
+    print(f"Exec: {Fore.CYAN}{simulation.__name__}{Style.RESET_ALL}")
     core_chunk.run()
 
     read_all_bin: ReadAllBin = ReadAllBin()

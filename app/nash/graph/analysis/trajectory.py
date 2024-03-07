@@ -47,13 +47,17 @@ class Trajectory(object):
             add_behavior.add(np.sort(ST2P_matrix(b), axis=1))
         return add_behavior.concat()
     
-    def define_colors_agents(self, colors_list: list[str]) -> None:
+    def define_colors_agents(self) -> None:
         """
         Defines a color for each player
         Args:
             colors_list (list[str]): Color list (length must be equal to the number of players)
         """
-        self.colors_list: list[str] = colors_list
+        color_list  : list[str] = configfiles.dot_ini['simulation']['simulate:info']['colors'].split(",")
+        color_hex   : bool      = bool(int(configfiles.dot_ini['simulation']['simulate:info']['color_hex']))
+        if color_hex == True:
+            color_list: list[str] = [f"#{c}" for c in color_list]
+        self.colors_list: list[str] = color_list
     
     @staticmethod
     def graph_func(ax: Axes, player: np.ndarray, sort_player: np.ndarray, color: str) -> None:
@@ -78,6 +82,7 @@ class Trajectory(object):
         """
         Execute the player trajectory graph
         """
+        self.define_colors_agents()
         graph: tuple[Figure, Axes] = plt.subplots()
         
         for player, sort_player, c in zip(self.data_concat, self.data_sort_concat, self.colors_list):
