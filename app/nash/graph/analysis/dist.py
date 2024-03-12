@@ -30,7 +30,7 @@ class Dist(object):
         self._trans_result_cumsum()
         self.define_colors_agents()
 
-        sns.set_theme("paper", "darkgrid", "pastel")
+        # sns.set_theme("paper", "darkgrid", "pastel")
     
     def _concat(self, behaviors: list[list[np.ndarray]]) -> list[np.ndarray]:
         """

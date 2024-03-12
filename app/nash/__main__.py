@@ -23,6 +23,7 @@ if __name__ == "__main__":
         ]
     # |--------------------------------------------------------------|
     
+    # RidgeLine Graph
     from graph.analysis.ridgeline import RidgeLine
     rigde_line: RidgeLine = RidgeLine(behaviors)
     rigde_line.show()
@@ -34,3 +35,8 @@ if __name__ == "__main__":
     dist.plot_cumsum_dist()
     dist.plot_boxplot_cumsum_dist()
     dist.show()
+    
+    # Trajectory Graph
+    from graph.analysis.trajectory import Trajectory
+    trajectory: Trajectory = Trajectory(behaviors)
+    trajectory.show()
