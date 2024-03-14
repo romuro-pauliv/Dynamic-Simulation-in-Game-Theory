@@ -19,7 +19,10 @@ if __name__ == "__main__":
 
     behaviors: list[list[np.ndarray]] = [
             init_simulation(behavior0),
-            init_simulation(behavior1)
+            init_simulation(behavior1),
+            init_simulation(behavior2),
+            init_simulation(behavior3),
+            init_simulation(behavior4)
         ]
     # |--------------------------------------------------------------|
     
