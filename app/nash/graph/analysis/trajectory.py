@@ -32,7 +32,20 @@ class Trajectory(object):
         self.x: np.ndarray = self._get_x(self.data)
 
         self._simulation_info(len(behaviors))
+        self.define_colors_agents()
         
+    def define_colors_agents(self) -> None:
+        """
+        Defines a color for each player
+        Args:
+            colors_list (list[str]): Color list (length must be equal to the number of players)
+        """
+        color_list  : list[str] = configfiles.dot_ini['simulation']['simulate:info']['colors'].split(",")
+        color_hex   : bool      = bool(int(configfiles.dot_ini['simulation']['simulate:info']['color_hex']))
+        if color_hex == True:
+            color_list: list[str] = [f"#{c}" for c in color_list]
+        self.color_list: list[str] = color_list
+    
     def _simulation_info(self, len_behaviors: int) -> None:
         PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
         STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
@@ -95,20 +108,21 @@ class Trajectory(object):
         return ax_dens2d, ax_hist_y, fig
     
     def _assemble_hist2d(self, ax: Axes, y: np.ndarray, mean: np.ndarray, std: np.ndarray, n: int) -> None:
-        ax.hist2d(self.x, y, bins=(100, 100), cmap="inferno_r")
-        ax.plot(mean, color="red", linewidth=0.5)
-        ax.plot(mean+2*std, color="red", linestyle="dashed", linewidth=0.5)
-        ax.plot(mean-2*std, color="red", linestyle="dashed", linewidth=0.5)
+        ax.plot(self.x, y, alpha=0.2, color=self.color_list[n], linewidth=0.2)
+        #ax.plot(mean, color="red", linewidth=0.5)
+        #ax.plot(mean+2*std, color="red", linestyle="dashed", linewidth=0.5)
+        #ax.plot(mean-2*std, color="red", linestyle="dashed", linewidth=0.5)
         ax.set_xlabel("Iterations")
         ax.set_ylabel("Cumulative Payoffs")
         ax.set_title(f"Player {n} | {self.simu_info}")
         
-    def _assemble_hist_y(self, ax: Axes, player_data: np.ndarray, y: np.ndarray) -> None:
+    def _assemble_hist_y(self, ax: Axes, player_data: np.ndarray, y: np.ndarray, n: int) -> None:
         density: gaussian_kde = gaussian_kde(player_data[-1, :])
         density.covariance_factor = lambda : .25
         density._compute_covariance()
         kde_x: np.ndarray = np.arange(min(y), max(y))
-        ax.plot(density(kde_x), kde_x, color="orange", linewidth=0.5)
+        ax.plot(density(kde_x), kde_x, color=self.color_list[n], linewidth=1)
+        ax.fill_between(density(kde_x), kde_x, interpolate=True, color=self.color_list[n], alpha=0.1)
         plt.setp(ax.get_xticklabels(), visible=False)
         plt.setp(ax.get_yticklabels(), visible=False)
     
@@ -122,7 +136,7 @@ class Trajectory(object):
         mean, std = self._get_mean_and_std(player_data)
         
         self._assemble_hist2d(ax_dens2d, y, mean, std, n)
-        self._assemble_hist_y(ax_hist_y, player_data, y)
+        self._assemble_hist_y(ax_hist_y, player_data, y, n)
         
     def show(self) -> None:
         """

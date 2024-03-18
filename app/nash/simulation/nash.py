@@ -45,12 +45,10 @@ def behavior0() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[2], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[2], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[3], 2, np.argmin)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[2], 3, np.argmin)
+        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        P1: int = choices.algorithms.single.randomize(STRATEGY)
         
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
+        historic.append(choices.get_payoffs(matrix, (P0, P1)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -76,12 +74,10 @@ def behavior1() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[2], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[2], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[3], 2, np.argmin)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[2], 3, np.argmin)
+        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        P1: int = choices.algorithms.single.randomize(STRATEGY)
         
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
+        historic.append(choices.get_payoffs(matrix, (P0, P1)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -109,11 +105,9 @@ def behavior2() -> None:
 
         # Algorithms to each player |------------------------------------|
         P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[1], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[np.random.choice([0, 1])], 2, np.argmax)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[3], 3, np.argmax)
+        P1: int = choices.algorithms.single.randomize(STRATEGY)
         
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
+        historic.append(choices.get_payoffs(matrix, (P0, P1)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
@@ -121,100 +115,6 @@ def behavior2() -> None:
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
 
-
-def behavior3() -> None:
-    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
-    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
-    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
-    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
-    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
-    ID_         : str   = str(uuid4())
-
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-
-        # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[1], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[np.random.choice([0, 1])], 2, np.argmax)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[3], 3, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
-        # |--------------------------------------------------------------|
-
-        choices.algorithms.group.clear_cache()
-    
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
-
-def behavior4() -> None:
-    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
-    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
-    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
-    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
-    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
-    ID_         : str   = str(uuid4())
-
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-
-        # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[1], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[np.random.choice([0, 1])], 2, np.argmax)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[3], 3, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
-        # |--------------------------------------------------------------|
-
-        choices.algorithms.group.clear_cache()
-    
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
-def behavior5() -> None:
-    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
-    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
-    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
-    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
-    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
-    ID_         : str   = str(uuid4())
-
-    
-    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
-    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
-    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
-    historic: list[np.ndarray] = []
-    
-    for _ in range(ITERATIONS):
-        matrix = payoff_gen.gen_random_payoff_matrix()
-
-        # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.sum_payoffs(matrix[1], 1, np.argmax)
-        P2: int = choices.algorithms.single.sum_payoffs(matrix[np.random.choice([0, 1])], 2, np.argmax)
-        P3: int = choices.algorithms.single.sum_payoffs(matrix[3], 3, np.argmax)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1, P2, P3)))
-        # |--------------------------------------------------------------|
-
-        choices.algorithms.group.clear_cache()
-    
-    historic: np.ndarray = np.array(historic)
-    GenBin.save(f"{datetime.now()}_{ID_}", historic)
 
 # | Imports |----------------------------------------------------------------------------------------------------------|
 from typing                         import Callable
