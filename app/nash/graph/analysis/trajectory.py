@@ -33,7 +33,14 @@ class Trajectory(object):
 
         self._simulation_info(len(behaviors))
         self.define_colors_agents()
-        
+        self._get_labels()
+    
+    def _get_labels(self) -> None:
+        """
+        Get labels (algorithms names) from .ini file
+        """
+        self.labels: list[str] = configfiles.dot_ini['simulation']['simulate:info']['algorithms_names'].split(",")
+    
     def define_colors_agents(self) -> None:
         """
         Defines a color for each player
@@ -114,7 +121,7 @@ class Trajectory(object):
         #ax.plot(mean-2*std, color="red", linestyle="dashed", linewidth=0.5)
         ax.set_xlabel("Iterations")
         ax.set_ylabel("Cumulative Payoffs")
-        ax.set_title(f"Player {n} | {self.simu_info}")
+        ax.set_title(f"{self.labels[n]} | {self.simu_info}")
         
     def _assemble_hist_y(self, ax: Axes, player_data: np.ndarray, y: np.ndarray, n: int) -> None:
         density: gaussian_kde = gaussian_kde(player_data[-1, :])

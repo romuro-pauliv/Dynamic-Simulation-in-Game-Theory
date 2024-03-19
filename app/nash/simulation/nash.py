@@ -45,16 +45,22 @@ def behavior0() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.randomize(STRATEGY)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1)))
+        GERMANY: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        AUSTRIA: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmax)
+        CZECHO : int = choices.algorithms.single.sum_payoffs(matrix[0 if np.random.random() <= 0.25 else 2], 2, np.argmax)
+        UK     : int = choices.algorithms.single.sum_payoffs(matrix[3], 3, np.argmax)
+        FRENCH : int = choices.algorithms.single.sum_payoffs(matrix[4], 4, np.argmax)
+        POLAND : int = choices.algorithms.single.sum_payoffs(matrix[5], 5, np.argmax)
+        USSR   : int = choices.algorithms.single.sum_payoffs(matrix[6], 6, np.argmax)
+
+        historic.append(choices.get_payoffs(matrix, (GERMANY, AUSTRIA, CZECHO, UK, FRENCH, POLAND, USSR)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
+
 
 def behavior1() -> None:
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
@@ -74,17 +80,21 @@ def behavior1() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.randomize(STRATEGY)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1)))
+        GERMANY: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        AUSTRIA: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmax)
+        CZECHO : int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmax)
+        UK     : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 3], 3, np.argmax)
+        FRENCH : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 4], 4, np.argmax)
+        POLAND : int = choices.algorithms.single.sum_payoffs(matrix[5], 5, np.argmax)
+        USSR   : int = choices.algorithms.single.sum_payoffs(matrix[6], 6, np.argmax)
+
+        historic.append(choices.get_payoffs(matrix, (GERMANY, AUSTRIA, CZECHO, UK, FRENCH, POLAND, USSR)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
-
 
 def behavior2() -> None:
     PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
@@ -104,16 +114,63 @@ def behavior2() -> None:
         matrix = payoff_gen.gen_random_payoff_matrix()
 
         # Algorithms to each player |------------------------------------|
-        P0: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
-        P1: int = choices.algorithms.single.randomize(STRATEGY)
-        
-        historic.append(choices.get_payoffs(matrix, (P0, P1)))
+        GERMANY: int = choices.algorithms.single.sum_payoffs(matrix[0], 0, np.argmax)
+        AUSTRIA: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmax)
+        CZECHO : int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmax)
+        UK     : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 3], 3, np.argmax)
+        FRENCH : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 4], 4, np.argmax)
+        POLAND : int = choices.algorithms.single.sum_payoffs(matrix[5], 5, np.argmax)
+        USSR   : int = choices.algorithms.single.sum_payoffs(matrix[0 if np.random.random() <= 0.5 else 6], 6, np.argmax)
+
+        historic.append(choices.get_payoffs(matrix, (GERMANY, AUSTRIA, CZECHO, UK, FRENCH, POLAND, USSR)))
         # |--------------------------------------------------------------|
 
         choices.algorithms.group.clear_cache()
     
     historic: np.ndarray = np.array(historic)
     GenBin.save(f"{datetime.now()}_{ID_}", historic)
+
+
+def behavior3() -> None:
+    PLAYERS     : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['players'])
+    STRATEGY    : int   = int(configfiles.dot_ini['simulation']['simulate:matrix']['strategy'])
+    ITERATIONS  : int   = int(configfiles.dot_ini['simulation']['simulate:samples']['iterations'])
+    MIN_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['min'])
+    MAX_RANGE   : float = float(configfiles.dot_ini['simulation']['simulate:payoff_range']['max'])
+    ID_         : str   = str(uuid4())
+
+    
+    payoff_gen  : PayoffGen = PayoffGen(PLAYERS, STRATEGY)
+    choices     : Choices   = Choices(payoff_gen.choice_index_data, payoff_gen.possibilities)
+    payoff_gen.payoff_range(MIN_RANGE, MAX_RANGE)
+    historic: list[np.ndarray] = []
+    
+    for _ in range(ITERATIONS):
+        matrix = payoff_gen.gen_random_payoff_matrix()
+
+        # Algorithms to each player |------------------------------------|
+        GERMANY: int = choices.algorithms.single.sum_payoffs(matrix[5], 0, np.argmin)
+        AUSTRIA: int = choices.algorithms.single.sum_payoffs(matrix[0], 1, np.argmax)
+        CZECHO : int = choices.algorithms.single.sum_payoffs(matrix[0], 2, np.argmax)
+        UK     : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 3], 3, np.argmax)
+        FRENCH : int = choices.algorithms.single.sum_payoffs(matrix[5 if np.random.random() <= 0.5 else 4], 4, np.argmax)
+        POLAND : int = choices.algorithms.single.sum_payoffs(matrix[0], 5, np.argmin)
+        
+        if np.random.choice([0, 1]) == 0:
+            USSR: int = choices.algorithms.single.sum_payoffs(matrix[0 if np.random.random() <= 0.5 else 6], 6, np.argmax)
+        else:
+            USSR: int = choices.algorithms.single.sum_payoffs(matrix[5], 6, np.argmin)
+
+        historic.append(choices.get_payoffs(matrix, (GERMANY, AUSTRIA, CZECHO, UK, FRENCH, POLAND, USSR)))
+        # |--------------------------------------------------------------|
+
+        choices.algorithms.group.clear_cache()
+    
+    historic: np.ndarray = np.array(historic)
+    GenBin.save(f"{datetime.now()}_{ID_}", historic)
+
+
+
 
 
 # | Imports |----------------------------------------------------------------------------------------------------------|

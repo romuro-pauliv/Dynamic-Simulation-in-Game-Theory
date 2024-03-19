@@ -20,7 +20,8 @@ if __name__ == "__main__":
     behaviors: list[list[np.ndarray]] = [
             init_simulation(behavior0),
             init_simulation(behavior1),
-            init_simulation(behavior2)
+            init_simulation(behavior2),
+            init_simulation(behavior3)
         ]
     # |--------------------------------------------------------------|
     
@@ -29,13 +30,13 @@ if __name__ == "__main__":
     rigde_line: RidgeLine = RidgeLine(behaviors)
     rigde_line.show()
     
-    # # Distribution Graph
-    # from graph.analysis.dist import Dist
-    # dist: Dist = Dist(behaviors)
-    # dist.plot_payoff_dist()
-    # dist.plot_cumsum_dist()
-    # dist.plot_boxplot_cumsum_dist()
-    # dist.show()
+    # Distribution Graph
+    from graph.analysis.dist import Dist
+    dist: Dist = Dist(behaviors)
+    dist.plot_payoff_dist()
+    dist.plot_cumsum_dist()
+    dist.plot_boxplot_cumsum_dist()
+    dist.show()
     
     # Trajectory Graph
     from graph.analysis.trajectory import Trajectory
