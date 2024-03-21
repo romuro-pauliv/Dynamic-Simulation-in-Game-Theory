@@ -21,7 +21,10 @@ if __name__ == "__main__":
             init_simulation(behavior0),
             init_simulation(behavior1),
             init_simulation(behavior2),
-            init_simulation(behavior3)
+            init_simulation(behavior3),
+            init_simulation(behavior4),
+            init_simulation(behavior5),
+            init_simulation(behavior6)
         ]
     # |--------------------------------------------------------------|
     
